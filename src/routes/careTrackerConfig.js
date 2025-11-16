@@ -1,25 +1,3 @@
-/**
- * Index Routes
- *
- * Define routes for the main pages of your application here.
- * Routes connect HTTP requests to controller functions.
- *
- * Example usage:
- * const express = require('express');
- * const router = express.Router();
- * const indexController = require('../controllers/indexController');
- *
- // Route: GET / → indexController.getHome
- // Renders view 'index' with locals: title, // data, //csrfToken.
- // Relies on model(s): SomeModel for database access.
- * router.get('/', indexController.getHome);
- // Route: GET /about → indexController.getAbout
- // Renders view 'about' with locals: title, //csrfToken.
- * router.get('/about', indexController.getAbout);
- *
- * module.exports = router;
- */
-
 const express = require('express');
 const router = express.Router();
 const careTrackerConfigController = require('../controllers/careTrackerConfigController');
@@ -42,5 +20,10 @@ router.get('/', controller.showConfigPage);
 // Uses form/body fields (req.body) to drive controller logic.
 // Relies on model(s): CareTrackerConfig for database access.
 router.post('/add_config', controller.addConfig);
+
+// Route: POST /delete → careTrackerConfigController.deleteConfig
+// Uses form/body fields (req.body) to drive controller logic.
+// Relies on model(s): CareTrackerConfig for database access.
+router.post('/delete', controller.deleteConfig);
 
 module.exports = router;

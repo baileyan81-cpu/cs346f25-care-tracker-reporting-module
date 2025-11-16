@@ -1,48 +1,29 @@
 /**
- * User Routes
+ * Users Routes
  *
- * Define routes related to user operations here.
- * This could include:
- * - User registration
- * - User login/logout
- * - User profile
- * - User management (admin)
- *
- * Example usage:
- * const express = require('express');
- * const router = express.Router();
- * const userController = require('../controllers/userController');
- *
- // Route: GET /register → userController.getRegister
- * router.get('/register', userController.getRegister);
- // Route: POST /register → userController.postRegister
- // Uses form/body fields (req.body) to drive controller logic.
- // Relies on model(s): User for database access.
- * router.post('/register', userController.postRegister);
- // Route: GET /login → userController.getLogin
- * router.get('/login', userController.getLogin);
- // Route: POST /login → userController.postLogin
- // Renders view 'users/login' with locals: //     title, //     error, //     csrfToken.
- // Uses form/body fields (req.body) to drive controller logic.
- * router.post('/login', userController.postLogin);
- // Route: POST /logout → userController.postLogout
- * router.post('/logout', userController.postLogout);
- *
- * module.exports = router;
+ * Handles login / logout (and later registration, profile, etc.).
  */
 
 const express = require('express');
 const router = express.Router();
 
-// Import controllers
-// const userController = require('../controllers/userController');
+const usersController = require('../controllers/usersController');
 
-// Define routes
-// Route: GET /register → userController.getRegister
-// router.get('/register', userController.getRegister);
-// Route: POST /register → userController.postRegister
-// Uses form/body fields (req.body) to drive controller logic.
-// Relies on model(s): User for database access.
-// router.post('/register', userController.postRegister);
+// GET /users/login → show login form
+router.get('/login', usersController.getLogin);
+// POST /users/login → handle login submission
+router.post('/login', usersController.postLogin);
+
+// GET /users/register → show login form
+router.get('/register', usersController.getRegister);
+// POST /users/register → handle login submission
+router.post('/register', usersController.postRegister);
+
+// POST /users/logout → handle logout
+router.post('/logout', usersController.postLogout);
+
+//Profile routes
+router.get('/profile', usersController.getProfile);
+router.post('/profile', usersController.postProfile);
 
 module.exports = router;

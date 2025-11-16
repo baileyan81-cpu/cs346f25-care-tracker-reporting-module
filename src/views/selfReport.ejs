@@ -5,9 +5,6 @@
   Primary data variables used in this template: completed, counter, csrfToken, domain, item, pct, progressData, title, total.
 -->
 
-/**
- * Form and submission view for student self‑reports.
- */
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +25,7 @@
           <li><a href="/about">About</a></li>
 <!-- Conditional block: Show user-specific section only when a user is logged in. (condition: `user`). -->
           <% if (user) { %>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/users/profile">Profile</a></li>
             <li>
               <form action="/users/logout" method="POST" style="display: inline;">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">

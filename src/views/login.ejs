@@ -1,0 +1,103 @@
+<!--
+  View: Users Login
+  Used by: GET /users/login via usersController.getLogin.
+  Expects template locals: title, csrfToken, user, error, email.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - CS346 Project</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="container">
+        <a href="/" class="logo">Titan Care Tracker</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+
+          <% if (user) { %>
+            <li><a href="/users/profile">Profile</a></li>
+            <li>
+              <form action="/users/logout" method="POST" style="display: inline;">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn-link">Logout</button>
+              </form>
+            </li>
+          <% } else { %>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/users/register">Register</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Login</h1>
+      <p>Log in with your Titan Care Tracker account.</p>
+    </section>
+
+    <section class="form-section">
+      <% if (error) { %>
+        <div class="alert alert-error">
+          <p><%= error %></p>
+        </div>
+      <% } %>
+
+      <form action="/users/login" method="POST" class="form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            value="<%= typeof email !== 'undefined' ? email : '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn-primary">Login</button>
+      </form>
+
+      <!-- DEV SHORTCUTS -->
+      <div class="dev-shortcuts">
+        <p class="dev-label">Developer login shortcuts (password: 123)</p>
+        <div class="dev-buttons">
+          <button type="button" id="dev-student"  class="btn-small">Student</button>
+          <button type="button" id="dev-teacher"  class="btn-small">Teacher</button>
+          <button type="button" id="dev-manager"  class="btn-small">Manager</button>
+        </div>
+      </div>
+      <script src="/js/devLogins.js"></script>
+      <!-- END DEV SHORTCUTS -->
+
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 CS346 Project. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

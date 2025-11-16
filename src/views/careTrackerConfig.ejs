@@ -5,10 +5,6 @@
   Primary data variables used in this template: c, csrfToken, title, type.
 -->
 
-/**
- * View for configuring care‑tracking categories, toggles, and settings.
- */
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +14,7 @@
   <title><%= title %> - CS346 Project</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="care-config-page">
   <header>
     <nav>
       <div class="container">
@@ -28,7 +24,7 @@
           <li><a href="/about">About</a></li>
 <!-- Conditional block: Show user-specific section only when a user is logged in. (condition: `user`). -->
           <% if (user) { %>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/users/profile">Profile</a></li>
             <li>
               <form action="/users/logout" method="POST" style="display: inline;">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -59,36 +55,58 @@
       <% }) %>
     </select>
 
+
     <section class="features">
       <h1>Code Table Reference</h1>
-      <table id="codeTable" class="table_shared">
+      <table id="codeTable" class="table_shared  care-config-table">
+        <colgroup>
+          <col class="col-type">
+          <col class="col-group">
+          <col class="col-code">
+          <!-- <col class="col-meaning"> -->
+          <col class="col-actions">
+        </colgroup>
         <thead>
           <tr>
             <th>Code Type</th>
             <th>Code Group</th>
             <th>Code</th>
-            <th>Meaning</th>
+            <!-- <th>Meaning</th> -->
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% codes.forEach(c => { %>
             <tr>
               <td><%= c.CodeType %></td>
-              <td><%= c.CodeGroup %></td>
-              <td><%= c.Code %></td>
-              <td><%= c.CodeMeaning %></td>
+              <td class="cell-wrap"><%= c.CodeGroup %></td>
+              <td class="cell-wrap"><%= c.Code %></td>
+              <!-- <td><%= c.CodeMeaning %></td> -->
+              <td>
+                <% if (user && user.roleLevel === 2) { %>
+                  <form
+                    method="POST"
+                    action="/caretrackerconfig/delete"
+                    style="display:inline;"
+                    onsubmit="return confirm('Delete this code?');"
+                  >
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="codeId" value="<%= c.CodeId %>">
+                    <button type="submit" class="btn-link danger">Delete</button>
+                  </form>
+                <% } %>
+              </td>
             </tr>
           <% }) %>
         </tbody>
       </table>
     </section>
   </div>
-
   <!-- RIGHT: Floating Form -->
   <aside class="code-form-panel">
     <h2 class="code-form-title">Add New Code</h2>
     <form id="newCodeForm" method="POST" action="/caretrackerconfig/add_config" class="code-form">
-
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="form-group">
         <label for="codeType"><strong>Code Type</strong></label><br>
         <select id="codeType" name="codeType" required class="form-control">
@@ -109,10 +127,10 @@
         <input type="text" id="code" name="code" required placeholder="e.g. D006" class="form-control">
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="codeMeaning"><strong>Code Meaning</strong></label><br>
         <textarea id="codeMeaning" name="codeMeaning" rows="3" placeholder="Description..." class="form-control"></textarea>
-      </div>
+      </div> -->
 
       <button type="submit" class="btn-primary">Add Code</button>
     </form>

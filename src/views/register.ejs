@@ -1,0 +1,144 @@
+<!--
+  View: Users Register
+  Used by: GET /users/register via usersController.getRegister.
+  Expects template locals:
+    - title
+    - csrfToken
+    - user
+    - error        (optional server-side error message)
+    - email        (optional sticky form value)
+    - firstName
+    - lastName
+    - joinCode
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - CS346 Project</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="container">
+        <a href="/" class="logo">Titan Care Tracker</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+
+          <% if (user) { %>
+            <li><a href="/users/profile">Profile</a></li>
+            <li>
+              <form action="/users/logout" method="POST" style="display: inline;">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn-link">Logout</button>
+              </form>
+            </li>
+          <% } else { %>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/users/register">Register</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Register</h1>
+      <p>Create your Titan Care Tracker account and join a class with your join code.</p>
+    </section>
+
+    <section class="form-section">
+      <% if (error) { %>
+        <div class="alert alert-error">
+          <p><%= error %></p>
+        </div>
+      <% } %>
+
+      <!-- Client-side validation errors -->
+      <div id="client-errors" class="alert alert-error" style="display: none;">
+        <ul id="client-errors-list"></ul>
+      </div>
+
+      <form
+        id="register-form"
+        action="/users/register"
+        method="POST"
+        class="form"
+      >
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            value="<%= typeof email !== 'undefined' ? email : '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            id="firstName"
+            name="firstName"
+            type="text"
+            required
+            value="<%= typeof firstName !== 'undefined' ? firstName : '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            required
+            value="<%= typeof lastName !== 'undefined' ? lastName : '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="joinCode">Join Code</label>
+          <input
+            id="joinCode"
+            name="joinCode"
+            type="text"
+            required
+            value="<%= typeof joinCode !== 'undefined' ? joinCode : '' %>"
+          >
+          <small>Use the join code provided by your instructor or manager.</small>
+        </div>
+
+        <button type="submit" class="btn-primary">Create Account</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 CS346 Project. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Client-side validation script -->
+  <script src="/js/register.js"></script>
+</body>
+</html>

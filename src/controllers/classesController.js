@@ -53,26 +53,3 @@ exports.getClassById = async (req, res, next) => {
     next(error);
   }
 };
-
-// POST /students/add
-exports.addClass = (req, res) => {
-  // const { id } = req.body.id;
-  // const { name } = req.body.name;
-  // if (!id || !id.trim()) {
-  //   return res.status(400).send(req.body.id);
-  // }
-  // if (!name || !name.trim()) {
-  //   return res.status(400).send('Name required');
-  // }
-
-  const newClass = {
-    id: req.body.id.trim(),
-    name: req.body.name.trim(),
-  };
-
-  //allClasses.push(newClass);
-
-  // Re-render or redirect
-  res.redirect('/classes'); // will show the updated list
-};
-};

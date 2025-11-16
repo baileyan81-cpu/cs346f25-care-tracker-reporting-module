@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - CS346 Project</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="container">
+        <a href="/" class="logo">Titan Care Tracker</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+
+          <% if (user) { %>
+            <li><a href="/users/profile">Profile</a></li>
+            <li>
+              <form action="/users/logout" method="POST" style="display: inline;">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn-link">Logout</button>
+              </form>
+            </li>
+          <% } else { %>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/users/register">Register</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>My Profile</h1>
+      <p>View and update your basic account information.</p>
+    </section>
+
+    <section class="form-section">
+      <% if (error) { %>
+        <div class="alert alert-error">
+          <p><%= error %></p>
+        </div>
+      <% } %>
+
+      <% if (success) { %>
+        <div class="alert alert-success">
+          <p><%= success %></p>
+        </div>
+      <% } %>
+
+      <% if (profile) { %>
+        <form
+          id="profile-form"
+          action="/users/profile"
+          method="POST"
+          class="form"
+        >
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+          <div class="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value="<%= profile.email %>"
+              disabled
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Role</label>
+            <input
+              type="text"
+              value="<%= profile.roleLabel %>"
+              disabled
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              id="firstName"
+              name="firstName"
+              type="text"
+              required
+              value="<%= profile.firstName %>"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input
+              id="lastName"
+              name="lastName"
+              type="text"
+              required
+              value="<%= profile.lastName %>"
+            >
+          </div>
+
+          <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+      <% } else { %>
+        <p>No profile data available.</p>
+      <% } %>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 CS346 Project. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
