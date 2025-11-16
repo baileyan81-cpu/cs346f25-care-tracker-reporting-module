@@ -61,9 +61,13 @@ app.use(
 // Note: Apply this after session middleware
 const csrfProtection = csrf({ cookie: false });
 
+// Apply CSRF protection to all routes (except any APIs you intentionally exclude)
+app.use(csrfProtection);
+
 // Make CSRF token available to all views
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
+  res.locals.csrfToken = req.csrfToken(); // now available in every EJS
   next();
 });
 
@@ -85,11 +89,13 @@ app.use('/classes', classesRouter);
 const careTrackerConfigRouter = require('./routes/careTrackerConfig');
 app.use('/careTrackerConfig', careTrackerConfigRouter);
 
+const usersRouter = require('./routes/users');
+app.use('/users', usersRouter);
+
 // AccreditationReport Route
 app.get('/accreditationReport', csrfProtection, (req, res) => {
   res.render('accreditationReport', {
     title: 'About',
-    csrfToken: req.csrfToken(),
   });
 });
 

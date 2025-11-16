@@ -1,3 +1,7 @@
+/**
+ * Supabase client/model used for interacting with Supabase backend.
+ */
+
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 

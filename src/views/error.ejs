@@ -1,8 +1,16 @@
+<!--
+  View: Error
+  Used as a standalone view; no controller metadata was found.
+  Primary data variables used in this template: error, message, title.
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Uses the dynamic page title set by the controller. -->
   <title><%= title %> - CS346 Project</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -22,7 +30,8 @@
     <div class="error-page">
       <h1><%= error.status || 500 %></h1>
       <h2><%= message %></h2>
-      
+
+<!-- Conditional block: Show this section only when the condition is true. (condition: `error.stack`). -->
       <% if (error.stack) { %>
         <div class="error-details">
           <h3>Error Details (Development Only)</h3>

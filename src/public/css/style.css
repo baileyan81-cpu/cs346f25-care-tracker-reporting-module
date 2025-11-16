@@ -525,3 +525,114 @@ footer {
 .hidden {
   display: none;
 }
+
+.input-error {
+  border-color: #c0392b;
+  outline-color: #c0392b;
+}
+
+/* Make the Care Tracker Config page use the full window width */
+.care-config-page main.container.form-container {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Give the table some room to scroll horizontally if needed */
+.care-config-page .features {
+  overflow-x: auto;
+}
+
+/* Optional: make the left table + right form share space nicely */
+.care-config-page .left-table {
+  flex: 1 1 60%;
+}
+
+.care-config-page .code-form-panel {
+  flex: 1 1 40%;
+}
+
+/* Make table respect explicit column widths */
+#codeTable {
+  width: 100%;
+  table-layout: fixed; /* allows colgroup widths to take effect */
+}
+
+/* Narrow “Type” and “Actions” (Delete), widen Group & Code */
+#codeTable .col-type {
+  width: 160px;
+  white-space: nowrap;
+}
+
+#codeTable .col-actions {
+  width: 100px;
+  text-align: center;
+}
+
+#codeTable .col-group {
+  width: 40%;
+}
+
+#codeTable .col-code {
+  width: 60%;
+}
+
+/* #codeTable .col-meaning {
+  width: 36%;
+} */
+
+/* Optional: keep long text tidy */
+#codeTable td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.care-config-page main.form-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px; /* space between table and aside */
+  max-width: 100%; /* let it use full width */
+  width: 100%;
+}
+
+/* Left side (table) grows and shrinks */
+.care-config-page .left-table {
+  flex: 1 1 auto;
+  min-width: 0; /* allows table to shrink without breaking layout */
+}
+
+/* Right side (aside) has fixed width */
+.care-config-page .code-form-panel {
+  flex: 0 0 320px; /* fixed 320px; adjust as you like */
+  max-width: 320px;
+}
+
+/* Optional: keep the form nicely contained inside the aside */
+.care-config-page .code-form-panel .code-form {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.care-config-table {
+  width: auto; /* shrink to content */
+  table-layout: auto; /* default: use content to size cols */
+  border-collapse: collapse;
+}
+
+/* Optional: keep long text from wrapping so width tracks longest value */
+.care-config-table th,
+.care-config-table td {
+  white-space: nowrap;
+}
+
+/* Let the container scroll if it gets wide */
+.care-config-page .features {
+  overflow-x: auto;
+}
+
+/* override for wrapped cells */
+.care-config-table .cell-wrap {
+  white-space: normal;          /* allow wrapping */
+  overflow-wrap: break-word;    /* break long words if needed */
+  word-break: break-word;       /* extra safety for very long tokens */
+  text-overflow: clip;          /* no ellipsis when wrapping */
+}

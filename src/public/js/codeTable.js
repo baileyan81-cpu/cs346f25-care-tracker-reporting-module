@@ -1,3 +1,5 @@
+///JS used by the care config page for the code table and add form.
+
 document.addEventListener('DOMContentLoaded', () => {
   const table = document.getElementById('codeTable');
   if (!table) return; // safety

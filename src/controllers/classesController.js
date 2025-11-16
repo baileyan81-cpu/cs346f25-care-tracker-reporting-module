@@ -1,6 +1,16 @@
+/**
+ * Controller: Handles HTTP request/response flow for this feature.
+ */
+
 const classesModel = require('../models/classesModel');
 const studentsModel = require('../models/studentsModel');
 
+/**
+ * Handles GET /.
+ * Uses classesModel model(s) to access persistent data.
+ * Renders the 'classes' view, providing template locals: title, courses, //csrfToken.
+ * Delegates unexpected errors to the Express error-handling middleware via next(err).
+ */
 exports.getClasses = async (req, res, next) => {
   try {
     const allClasses = await classesModel.getAll();
@@ -14,6 +24,12 @@ exports.getClasses = async (req, res, next) => {
   }
 };
 
+/**
+ * Handles GET /class_report/:id.
+ * Renders the 'classReport' view, providing template locals: title.
+ * Reads route parameters from req.params to identify the resource being operated on.
+ * Delegates unexpected errors to the Express error-handling middleware via next(err).
+ */
 exports.getClassById = async (req, res, next) => {
   try {
     const courseId = req.params.id;
@@ -36,26 +52,4 @@ exports.getClassById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-// POST /students/add
-exports.addClass = (req, res) => {
-  // const { id } = req.body.id;
-  // const { name } = req.body.name;
-  // if (!id || !id.trim()) {
-  //   return res.status(400).send(req.body.id);
-  // }
-  // if (!name || !name.trim()) {
-  //   return res.status(400).send('Name required');
-  // }
-
-  const newClass = {
-    id: req.body.id.trim(),
-    name: req.body.name.trim(),
-  };
-
-  //allClasses.push(newClass);
-
-  // Re-render or redirect
-  res.redirect('/classes'); // will show the updated list
 };

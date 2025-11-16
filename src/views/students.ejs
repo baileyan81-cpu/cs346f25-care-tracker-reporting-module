@@ -1,8 +1,17 @@
+<!--
+  View: Students
+  Used by: GET / via studentsController.getStudents.
+  Expects template locals: //csrfToken, students, title.
+  Primary data variables used in this template: csrfToken, student, title.
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Uses the dynamic page title set by the controller. -->
   <title><%= title %> - CS346 Project</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,8 +23,9 @@
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
+<!-- Conditional block: Show user-specific section only when a user is logged in. (condition: `user`). -->
           <% if (user) { %>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/users/profile">Profile</a></li>
             <li>
               <form action="/users/logout" method="POST" style="display: inline;">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -37,6 +47,7 @@
 
     <h2>Students</h2>
 
+<!-- Conditional block: Show this section only when the condition is true. (condition: `students && students.length > 0`). -->
       <% if (students && students.length > 0) { %>
         <div class="table-scroll">
           <table class="table_shared">
@@ -46,9 +57,11 @@
               </tr>
             </thead>
             <tbody>
+<!-- Conditional block: Show this section only when the condition is true. (condition: `students && students.length > 0`). -->
               <% if (students && students.length > 0) { %>
                 <% students.forEach(student => { %>
                   <tr>
+<!-- Outputs the value of 'student' passed from the controller. -->
                     <td><a href="/students/studentReport/<%= student.fullName %>/<%= student.userId  %>" class="student-report" style="font-weight: bold;"><%= student.fullName %></a></td>
                   </tr>
                 <% }); %>
@@ -64,7 +77,7 @@
         <p>No students are currently available.</p>
       <% } %>
       <hr>
-
+    <a href="/" class="features">← Back to Home</a>
   </main>
 
   <footer>

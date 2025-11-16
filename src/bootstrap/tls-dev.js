@@ -1,3 +1,7 @@
+/**
+ * Module: Provides logic for this feature.
+ */
+
 // DEV ONLY — enable by setting ALLOW_INSECURE_TLS=1 in your .env or shell.
 // This widens the bypass to cover both fetch-based libs and Node's https.
 if (process.env.ALLOW_INSECURE_TLS === '1') {

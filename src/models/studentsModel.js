@@ -1,6 +1,13 @@
+/**
+ * Model: Provides data-access logic and interaction with the database or external services.
+ */
+
 const supabase = require('./supabase');
 
 class StudentsModel {
+/**
+ * Returns all rows from the underlying table, typically used to populate lists or dropdowns.
+ */
   static async getAll() {
     const { data, error } = await supabase
       .from('v_students')
@@ -17,6 +24,9 @@ class StudentsModel {
     // --- END DATA MAPPING ---
   }
 
+/**
+ * Model helper method 'getDomainReportByUserId' encapsulating a reusable database operation.
+ */
   static async getDomainReportByUserId(userId) {
     const { data, error } = await supabase
       .from('v_domain_progress')
@@ -48,6 +58,9 @@ class StudentsModel {
     return Array.from(byDomain.values());
   }
 
+/**
+ * Model helper method 'getProgressReportByUserId' encapsulating a reusable database operation.
+ */
   static async getProgressReportByUserId(userId) {
     const { data, error } = await supabase
       .from('v_student_progress')
@@ -69,6 +82,9 @@ class StudentsModel {
     // --- END DATA MAPPING ---
   }
 
+/**
+ * Model helper method 'getStudentsByClassId' encapsulating a reusable database operation.
+ */
   static async getStudentsByClassId(classroomId) {
     const { data, error } = await supabase
       .from('v_students_in_class')

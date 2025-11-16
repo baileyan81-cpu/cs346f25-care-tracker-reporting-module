@@ -1,8 +1,16 @@
+<!--
+  View: About
+  Used by: GET / via aboutController.getAbout; GET /about via indexController.getAbout.
+  Expects template locals: //csrfToken, title.
+  Primary data variables used in this template: csrfToken, title.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Uses the dynamic page title set by the controller. -->
   <title><%= title %> - CS346 Project</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,8 +22,9 @@
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
+<!-- Conditional block: Show user-specific section only when a user is logged in. (condition: `user`). -->
           <% if (user) { %>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/users/profile">Profile</a></li>
             <li>
               <form action="/users/logout" method="POST" style="display: inline;">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">

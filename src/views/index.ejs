@@ -1,8 +1,16 @@
+<!--
+  View: Index
+  Used by: GET / via indexController.getHome.
+  Expects template locals: // data, //csrfToken, title.
+  Primary data variables used in this template: csrfToken, title.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Uses the dynamic page title set by the controller. -->
   <title><%= title %> - CS346 Project</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,8 +22,9 @@
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
+<!-- Conditional block: Show user-specific section only when a user is logged in. (condition: `user`). -->
           <% if (user) { %>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/users/profile">Profile</a></li>
             <li>
               <form action="/users/logout" method="POST" style="display: inline;">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -37,41 +46,63 @@
       <p>Clinical reporting made easy.</p>
     </section>
 
+    <% if (!showStudentFeatures && !showTeacherFeatures && !showManagerFeatures) { %>
+    <section class="features">
+      <h2>Login to access features</h2>
+    </section>
+    <% } %>
+
+    <% if (showStudentFeatures || showTeacherFeatures || showManagerFeatures) { %>
     <section class="features">
       <h2>Features</h2>
       <div class="feature-grid">
-        <a href="students/selfReport" class="feature">
-          <div>
-            <h3>Student Report</h3>
-            <p>Only Visible to Logged in Student.</p>
-          </div>
-        </a>
+
+        <% if (showStudentFeatures) { %>
+          <a href="students/selfReport" class="feature">
+            <div>
+              <h3>My Progress Report</h3>
+            </div>
+          </a>
+        <% } %>
+
+        <% if ( showTeacherFeatures || showManagerFeatures) { %>
         <a href="students" class="feature">
           <div>
             <h3>Students</h3>
-            <p>Only Visible to Logged in Manager.</p>
+            <p>Competency Progression Reports by student.</p>
           </div>
         </a>
+        <% } %>
+
+        <% if (showTeacherFeatures || showManagerFeatures) { %>
         <a href="classes" class="feature">
           <div>
             <h3>Classes</h3>
-            <p>Only Visible to Logged in users with Teacher or Manager roles.</p>
+            <p>Competency Progression Reports by Class.</p>
           </div>
         </a>
+        <% } %>
+
+        <% if (showManagerFeatures) { %>
         <a href="accreditationreport" class="feature">
           <div>
-            <h3>Accreditation Report</h3>
-            <p>Only Visible to Logged in users with Manager role.</p>
+            <h3>Accreditation Reports</h3>
+            <p>All student Clinical Hours Reports</p>
           </div>
         </a>
+        <% } %>
+
+        <% if (showManagerFeatures) { %>
         <a href="caretrackerconfig" class="feature">
           <div>
             <h3>Care Tracker Configuration</h3>
-            <p>Only Visible to Logged in users with Manager role.</p>
+            <p>Add and Remove dropdown code values.</p>
           </div>
         </a>
+        <% } %>
       </div>
     </section>
+    <% } %>
 
   </main>
 

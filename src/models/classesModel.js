@@ -1,6 +1,13 @@
+/**
+ * Model: Provides data-access logic and interaction with the database or external services.
+ */
+
 const supabase = require('./supabase');
 
 class ClassesModel {
+/**
+ * Returns all rows from the underlying table, typically used to populate lists or dropdowns.
+ */
   static async getAll() {
     const { data, error } = await supabase
       .from('v_classrooms')
@@ -18,6 +25,9 @@ class ClassesModel {
     // --- END DATA MAPPING ---
   }
 
+/**
+ * Model helper method 'getClassByClassId' encapsulating a reusable database operation.
+ */
   static async getClassByClassId(classroomId) {
     const { data, error } = await supabase
       .from('v_classrooms')

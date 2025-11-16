@@ -1,35 +1,29 @@
 /**
- * User Routes
+ * Users Routes
  *
- * Define routes related to user operations here.
- * This could include:
- * - User registration
- * - User login/logout
- * - User profile
- * - User management (admin)
- *
- * Example usage:
- * const express = require('express');
- * const router = express.Router();
- * const userController = require('../controllers/userController');
- *
- * router.get('/register', userController.getRegister);
- * router.post('/register', userController.postRegister);
- * router.get('/login', userController.getLogin);
- * router.post('/login', userController.postLogin);
- * router.post('/logout', userController.postLogout);
- *
- * module.exports = router;
+ * Handles login / logout (and later registration, profile, etc.).
  */
 
 const express = require('express');
 const router = express.Router();
 
-// Import controllers
-// const userController = require('../controllers/userController');
+const usersController = require('../controllers/usersController');
 
-// Define routes
-// router.get('/register', userController.getRegister);
-// router.post('/register', userController.postRegister);
+// GET /users/login → show login form
+router.get('/login', usersController.getLogin);
+// POST /users/login → handle login submission
+router.post('/login', usersController.postLogin);
+
+// GET /users/register → show login form
+router.get('/register', usersController.getRegister);
+// POST /users/register → handle login submission
+router.post('/register', usersController.postRegister);
+
+// POST /users/logout → handle logout
+router.post('/logout', usersController.postLogout);
+
+//Profile routes
+router.get('/profile', usersController.getProfile);
+router.post('/profile', usersController.postProfile);
 
 module.exports = router;

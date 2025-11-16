@@ -1,8 +1,17 @@
+<!--
+  View: Classes
+  Used by: GET / via classesController.getClasses.
+  Expects template locals: //csrfToken, courses, title.
+  Primary data variables used in this template: course, csrfToken, title.
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Uses the dynamic page title set by the controller. -->
   <title><%= title %> - CS346 Project</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,8 +23,9 @@
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
+<!-- Conditional block: Show user-specific section only when a user is logged in. (condition: `user`). -->
           <% if (user) { %>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/users/profile">Profile</a></li>
             <li>
               <form action="/users/logout" method="POST" style="display: inline;">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -37,6 +47,7 @@
 
     <h2>Courses</h2>
 
+<!-- Conditional block: Show this section only when the condition is true. (condition: `courses && courses.length > 0`). -->
       <% if (courses && courses.length > 0) { %>
         <div class="table-scroll">
           <table class="table_shared">
@@ -48,6 +59,7 @@
               </tr>
             </thead>
             <tbody>
+<!-- Conditional block: Show this section only when the condition is true. (condition: `courses && courses.length > 0`). -->
               <% if (courses && courses.length > 0) { %>
                 <% courses.forEach(course => { %>
                   <tr><td><a href="/classes/class_report/<%= course.classroomId %>" class="course-report" style="font-weight: bold;"><%= course.semester %></a></td>
@@ -74,7 +86,7 @@
       <label>Name? <input type="text" name="name"></label>
       <input type="submit" value="Add Course"><p>Placeholder data entry pending database connection.</p>
     </form> -->
-
+    <a href="/" class="features">← Back to Home</a>
   </main>
 
   <footer>
