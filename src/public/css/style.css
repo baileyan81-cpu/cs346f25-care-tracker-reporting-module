@@ -631,8 +631,40 @@ footer {
 
 /* override for wrapped cells */
 .care-config-table .cell-wrap {
-  white-space: normal;          /* allow wrapping */
-  overflow-wrap: break-word;    /* break long words if needed */
-  word-break: break-word;       /* extra safety for very long tokens */
-  text-overflow: clip;          /* no ellipsis when wrapping */
+  white-space: normal; /* allow wrapping */
+  overflow-wrap: break-word; /* break long words if needed */
+  word-break: break-word; /* extra safety for very long tokens */
+  text-overflow: clip; /* no ellipsis when wrapping */
+}
+
+/* Make each competency stack its children vertically */
+.competency {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.competency-main {
+  display: flex;
+  align-items: center; /* ⬅ center checkbox with the text line */
+}
+
+.competency-main label {
+  margin-left: 0.4rem;
+}
+
+/* Second row: meta info, under the text */
+.competency-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-left: 2rem; /* indent under the text instead of under the checkbox */
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.competency-meta-item {
+  white-space: nowrap;
 }

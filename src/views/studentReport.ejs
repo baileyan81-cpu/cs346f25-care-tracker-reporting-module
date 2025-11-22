@@ -1,8 +1,21 @@
 <!--
-  View: StudentReport
-  Used by: GET /studentReport/:name/:user_id via studentsController.getStudentByName.
-  Expects template locals: //csrfToken, competencies, progressData, student_name, title.
-  Primary data variables used in this template: completed, counter, csrfToken, domain, item, pct, progressData, title, total.
+  Unified Student Report View
+
+  Used by:
+    - GET /selfReport                        via studentsController.getSelfReport
+    - GET /studentReport/:name/:user_id      via studentsController.getStudentByName
+    - GET /classStudentReport/:name/:user_id/:class_id via studentsController.getClassStudentByName
+
+  Expects template locals:
+    // Required:
+    //   csrfToken, competencies, title
+    //
+    // Optional:
+    //   user, progressData, class_id,
+    //   backUrl, backLabel
+    //
+    // Primary data variables used in this template:
+    //   class_id, completed, counter, csrfToken, domain, item, pct, progressData, title, total.
 -->
 
 <!DOCTYPE html>
@@ -10,7 +23,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Uses the dynamic page title set by the controller. -->
   <title><%= title %> - CS346 Project</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -22,7 +34,6 @@
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
-<!-- Conditional block: Show user-specific section only when a user is logged in. (condition: `user`). -->
           <% if (user) { %>
             <li><a href="/users/profile">Profile</a></li>
             <li>
@@ -41,59 +52,103 @@
   </header>
 
   <main class="container">
-
-
     <section class="features">
       <h1>Student Report</h1>
 
-<!-- Conditional block: Show this section only when the condition is true. (condition: `progressData`). -->
       <% if (progressData) {
           const total = Math.max(1, Number(progressData.total || 0)); // avoid /0
           const completed = Number(progressData.completed || 0);
           const pct = Math.round((completed / total) * 100);
       %>
-      <section class="progress-widget" aria-labelledby="progress-title">
-        <h3 id="progress-title" class="progress-title"><%= progressData.fullName %></h3>
+        <section class="progress-widget" aria-labelledby="progress-title">
+          <h3 id="progress-title" class="progress-title"><%= progressData.fullName %></h3>
 
-        <div class="progress-meta">
-          <span class="progress-label"><%= progressData.progressLabel %> competencies demonstrated.</span>
-        </div>
-
-        <progress
-          class="progress-bar"
-          max="<%= total %>"
-          value="<%= completed %>"
-          aria-valuemin="0"
-          aria-valuemax="<%= total %>"
-          aria-valuenow="<%= completed %>"
-          aria-label="<%= progressData.progressLabel %>">
-            <%= pct %>%   <!-- fallback text for very old browsers -->
-        </progress>
-      </section>
-      <% } %>
-        <% let counter = 1; %>
-        <% competencies.forEach(domain => { %>
-          <div class="domain">
-            <h2><%= domain.domain %></h2>
-            <% domain.competencies.forEach(item => { %>
-              <div class="competency">
-                <input
-                  type="checkbox"
-                  id="comp<%= counter %>"
-                  <%= item.complete ? 'checked' : '' %>
-                  disabled
-                >
-                <label for="comp<%= counter %>">
-                  <%= item.text %>
-                </label>
-              </div>
-              <% counter++; %>
-            <% }) %>
+          <div class="progress-meta">
+            <span class="progress-label"><%= progressData.progressLabel %> competencies demonstrated.</span>
           </div>
-        <% }) %>
+
+          <progress
+            class="progress-bar"
+            max="<%= total %>"
+            value="<%= completed %>"
+            aria-valuemin="0"
+            aria-valuemax="<%= total %>"
+            aria-valuenow="<%= completed %>"
+            aria-label="<%= progressData.progressLabel %>">
+              <%= pct %>%   <!-- fallback text for very old browsers -->
+          </progress>
+        </section>
+      <% } %>
+
+      <% let counter = 1; %>
+      <% competencies.forEach(domain => { %>
+        <div class="domain">
+          <h2><%= domain.domain %></h2>
+          <% domain.competencies.forEach(item => { %>
+            <div class="competency">
+            <!-- main line: checkbox + text -->
+            <div class="competency-main">
+              <input
+                type="checkbox"
+                id="comp<%= counter %>"
+                <%= item.complete ? 'checked' : '' %>
+                disabled
+              >
+              <label for="comp<%= counter %>">
+                <%= counter %>. <%= item.text %>
+              </label>
+            </div>
+
+            <!-- meta row: only if we have at least one iteration -->
+            <% if (item.iterations && item.iterations > 0) { %>
+              <div class="competency-meta-row">
+                <span class="competency-meta-item">
+                  <strong>Iterations:</strong> <%= item.iterations %>
+                </span>
+
+                <% if (item.completionDate) { %>
+                  <span class="competency-meta-item">
+                    <strong>First completion:</strong> <%= item.completionDate %>
+                  </span>
+                <% } %>
+
+                <% if (item.mostRecent) { %>
+                  <span class="competency-meta-item">
+                    <strong>Most recent:</strong> <%= item.mostRecent %>
+                  </span>
+                <% } %>
+              </div>
+            <% } %>
+          </div>
+          <% counter++; %>
+
+          <% }) %>
+        </div>
+      <% }) %>
     </section>
 
-    <a href="/students" class="features">← Back to Student List</a>
+    <%
+      // BACK LINK LOGIC:
+      // 1) If backUrl/backLabel are provided, use them.
+      // 2) Else if class_id present, go back to that class report.
+      // 3) Else default to Home.
+      let resolvedBackUrl;
+      let resolvedBackLabel;
+
+      if (typeof backUrl !== 'undefined' && backUrl) {
+        resolvedBackUrl = backUrl;
+        resolvedBackLabel = backLabel || '← Back';
+      } else if (typeof class_id !== 'undefined' && class_id) {
+        resolvedBackUrl = `/classes/class_report/${class_id}`;
+        resolvedBackLabel = '← Back to Class Report';
+      } else {
+        // you can change this default to '/students' if you prefer
+        resolvedBackUrl = '/';
+        resolvedBackLabel = '← Back to Home';
+      }
+    %>
+
+    <a href="<%= resolvedBackUrl %>" class="features"><%= resolvedBackLabel %></a>
   </main>
 
   <footer>

@@ -175,30 +175,17 @@ exports.postRegister = async (req, res, next) => {
       });
     }
 
-    // --- Create care_users row via DB function (through the model) ---
-    let careUser;
-    try {
-      careUser = await usersModel.createUpdateCareUser(
-        firstName,
-        lastName,
-        data.user.id
-      );
-    } catch (rpcErr) {
-      console.error(
-        'Error calling create_update_care_user via usersModel:',
-        rpcErr
-      );
-      // If this fails, you can decide whether to block registration
-      // or allow it and handle profile creation later.
-      return res.status(500).render('register', {
-        title: 'Register',
+    const userId = data.user.id;
+    const careUser = await usersModel.getUserByUserId(userId);
+
+    if (error || !careUser) {
+      ///We have a supabase account but not a care_user row?
+      return res.status(401).render('login', {
+        title: 'Login',
         csrfToken: req.csrfToken ? req.csrfToken() : '',
         user: null,
         email,
-        firstName,
-        lastName,
-        joinCode,
-        error: 'Error creating user profile. Please try again.',
+        error: 'Something went wrong.',
       });
     }
 

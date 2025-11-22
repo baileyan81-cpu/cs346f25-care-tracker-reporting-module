@@ -41,6 +41,8 @@ exports.getStudentReportByUserID = async (req, res, next) => {
     const studentName = req.params.name;
     res.render('studentReport', {
       title: 'StudentByName',
+      backUrl: '/students',
+      backLabel: '← Back to Students',
       student_name: studentName,
       competencies: competencyData,
       progressData: progressData,
@@ -63,7 +65,7 @@ exports.getClassStudentByUserId = async (req, res, next) => {
     const progressData = await model.getProgressReportByUserId(userId);
     const studentName = req.params.name;
     const classId = req.params.class_id;
-    res.render('classStudentReport', {
+    res.render('studentReport', {
       title: 'StudentByName',
       student_name: studentName,
       competencies: competencyData,
@@ -87,7 +89,7 @@ exports.getSelfReport = async (req, res, next) => {
     const competencyData = await model.getDomainReportByUserId(userId);
     const progressData = await model.getProgressReportByUserId(userId);
     const studentName = req.params.name;
-    res.render('selfReport', {
+    res.render('studentReport', {
       title: 'Student Report',
       student_name: studentName,
       competencies: competencyData,

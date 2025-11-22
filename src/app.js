@@ -92,6 +92,9 @@ app.use('/careTrackerConfig', careTrackerConfigRouter);
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
+const clinicalHoursRouter = require('./routes/clinicalHours');
+app.use('/clinicalHours', clinicalHoursRouter);
+
 // AccreditationReport Route
 app.get('/accreditationReport', csrfProtection, (req, res) => {
   res.render('accreditationReport', {
